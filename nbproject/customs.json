@@ -1,0 +1,18 @@
+{
+    "elements": {
+        "scrollable-table": {
+            "attributes": {
+                "watch": {}
+            }
+        }
+    },
+    "attributes": {
+        "class": {},
+        "ui-sref-active": {
+            "context": "li"
+        },
+        "ui-sref": {
+            "context": "a"
+        }
+    }
+}

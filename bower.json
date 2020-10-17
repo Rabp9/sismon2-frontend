@@ -1,0 +1,33 @@
+{
+  "name": "sismon2-frontend",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular": "1.5.8",
+    "bootstrap-sass-official": "^3.2.0",
+    "angular-animate": "1.5.8",
+    "angular-cookies": "1.5.8",
+    "angular-resource": "1.5.8",
+    "angular-sanitize": "1.5.8",
+    "angular-touch": "1.5.8",
+    "angular-ui-router": "^1.0.28",
+    "angular-bootstrap": "^2.5.0",
+    "angular-ui-grid": "^4.9.0",
+    "ngmap": "^1.18.4",
+    "tg-angular-validator": "^1.2.10",
+    "angular-scrollable-table": "^1.1.2"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.5.8"
+  },
+  "appPath": "app",
+  "moduleName": "sismon2FrontendApp",
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "less/bootstrap.less",
+        "dist/css/bootstrap.css",
+        "dist/js/bootstrap.js"
+      ]
+    }
+  }
+}
