@@ -1,0 +1,8 @@
+1. Seed database
+bin\cake DatabaseSeed
+
+2. PHPUnit Test
+vendor\bin\phpunit
+
+vendor\bin\phpunit tests\TestCase\Controller\InterseccionesControllerTest
+vendor\bin\phpunit tests\TestCase\Controller\TrabajosControllerTest

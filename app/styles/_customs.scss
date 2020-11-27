@@ -1,0 +1,52 @@
+.accidentes-form {
+    max-height: 480px;
+    overflow: auto;
+}
+
+#dvContainer {
+    min-height: calc(100vh - 100px);
+}
+
+.center-image-vertical {
+    margin-top: 20%;
+}
+
+.footer {
+    height: 50px;
+    text-align: center;
+}
+
+.body-login {
+    background-color: $color-default;
+    height: 100%;
+    .dv-login {
+        margin-top: 10px;
+    }
+    .header {
+        display: none;
+    }
+    .footer {
+        display: none;
+    }
+}
+
+.data-sheet-header {
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    background-color: $color-primary;
+    color: white;
+}
+
+.btn-step {
+    width: 110px; 
+}
+
+.btn-step-prev {
+    text-align: right;
+}
+
+.btn-step-next {
+    text-align: left;
+    
+}

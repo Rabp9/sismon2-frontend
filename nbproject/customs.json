@@ -1,18 +1,67 @@
 {
     "elements": {
+        "uib-progressbar": {
+            "attributes": {
+                "value": {}
+            }
+        },
+        "marker": {
+            "attributes": {
+                "ng-repeat": {},
+                "position": {}
+            }
+        },
+        "uib-tab": {
+            "attributes": {
+                "heading": {},
+                "disable": {}
+            }
+        },
+        "info-window": {},
+        "ui-view": {},
+        "uib-tabset": {
+            "attributes": {
+                "active": {}
+            }
+        },
         "scrollable-table": {
             "attributes": {
                 "watch": {}
             }
+        },
+        "ng-map": {
+            "attributes": {
+                "default-style": {},
+                "on-click": {},
+                "center": {},
+                "zoom-to-include-markers": {},
+                "zoom": {},
+                "style": {}
+            }
         }
     },
     "attributes": {
+        "col": {},
+        "on-click": {},
+        "angular-validator": {
+            "context": "form"
+        },
+        "icon": {},
+        "index": {},
+        "title": {},
+        "map-lazy-load": {
+            "context": "div"
+        },
+        "ui-sref": {
+            "context": "a"
+        },
+        "checklist-model": {},
+        "sortable-header": {},
+        "id": {},
         "class": {},
         "ui-sref-active": {
             "context": "li"
         },
-        "ui-sref": {
-            "context": "a"
-        }
+        "on-mouseover": {}
     }
 }

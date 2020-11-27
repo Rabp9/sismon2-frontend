@@ -1,0 +1,100 @@
+<ol class="breadcrumb">
+    <li><a ui-sref="main">Inicio</a></li>
+    <li>Mantenimiento</li>
+    <li><a ui-sref="actividadesIndex">Actividades</a></li>
+    <li class="active">Modificar Actividad</li>
+</ol>
+<h2>Modificar Actividad</h2>
+<div class="alert alert-dismissible" ng-class="{'alert-success': errors === undefined, 'alert-danger': errors !== undefined }" role="alert" ng-show="message !== undefined">
+    <button type="button" class="close" ng-click="message = undefined" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    {{ message }} 
+</div>
+<form novalidate angular-validator angular-validator-submit="save()" name="ActiivdadEdit" angular-validator-quiet>
+    
+    <uib-tabset active="active">
+        <uib-tab index="0" heading="Información General">
+            <p ng-show="tableTareas.loading">Cargando...</p>
+            <div class="row" ng-hide="tableTareas.loading">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="txtDescripcion">Descripción</label>
+                        <input id="txtDescripcion" class="form-control" type="text" ng-model="actividad.descripcion"
+                            name="actividadDescripcion" placeholder="Escribe una descripción" required required-message="'Este campo es requerido'" validate-on="blur" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="sltActividadesTipoId">Tipo de Actividad</label>
+                        <select id="sltActividadesTipoId" class="form-control"
+                            ng-options="actividadesTipo.id as actividadesTipo.descripcion for actividadesTipo in actividadesTipos"
+                            ng-model="actividad.actividades_tipo_id"
+                            name="actividadActividadesTipoId"
+                            required required-message="'Este campo es requerido'" validate-on="blur" >
+                            <option value="">{{ loadingActividadesTipos }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="sltTrabajadorId">Responsable</label>
+                        <select id="sltTrabajadorId" class="form-control"
+                            ng-options="trabajador.id as trabajador.fullName for trabajador in trabajadores"
+                            ng-model="actividad.trabajador_id"
+                            name="actividadTrabajadorId"
+                            required required-message="'Este campo es requerido'" validate-on="blur" >
+                            <option value="">{{ loadingTrabajadores }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab index="1" heading="Tareas">
+            <p ng-show="tableTareas.loading">Cargando...</p>
+            <scrollable-table id="tblTareas" watch="actividad" class="table-responsive" ng-hide="tableTareas.loading">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th ng-style="{'width': tableTareas.tareasWs.wId}" sortable-header col="id">ID</th>
+                            <th ng-style="{'width': tableTareas.tareasWs.wInterseccion}" sortable-header col="interseccion">Intersección</th>
+                            <th ng-style="{'width': tableTareas.tareasWs.wDescripcion}" sortable-header col="descripcion">Descripción</th>
+                            <th ng-style="{'width': tableTareas.tareasWs.wDificultad}" sortable-header col="dificultad">Dificultad</th>
+                            <th ng-style="{'width': tableTareas.tareasWs.wPrioridad}" sortable-header col="prioridad">Prioridad</th>
+                            <th ng-style="{'width': tableTareas.tareasWs.wFechaProgramada}" sortable-header col="fechaProgramada">Fecha Programada</th>
+                            <th ng-style="{'width': tableTareas.tareasWs.wFechaRealizada}" sortable-header col="fechaRealizada">Fecha Realizada</th>
+                            <th ng-style="{'width': tableTareas.tareasWs.wEstado}" sortable-header col="estado">Estado</th>
+                            <th ng-style="{'width': tableTareas.tareasWs.wAcciones}" sortable-header col="acciones"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-show="tareas.length === 0"><td colspan="9">No hay registros</td></tr>
+                        <tr ng-class="{'success': tarea.estado_id === 3}" ng-repeat="tarea in actividad.tareas" row-id="{{ index }}">
+                            <td>{{ tarea.id }}</td>
+                            <td>{{ tarea.interseccion.descripcion }}</td>
+                            <td>{{ tarea.descripcion }}</td>
+                            <td>{{ tarea.dificultad }}</td>
+                            <td>{{ tarea.prioridad }}</td>
+                            <td>{{ tarea.fecha_programada }}</td>
+                            <td>{{ tarea.wFechaRealizada }}</td>
+                            <td>
+                                <span ng-if="tarea.estado_id === 3" style="font-weight: bold;">Realizado</span>
+                                <span ng-if="tarea.estado_id === 1">Pendiente</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <button ng-show="tarea.estado_id === 1" type="button" class="btn btn-primary btn-sm" ng-click="editTarea(tarea)"><span class="glyphicon glyphicon-pencil"></span></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </scrollable-table>
+        </uib-tab>
+    </uib-tabset>
+    <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-link" ui-sref="interseccionesIndex">Volver a la lista de Actividades</a>
+            <div class="pull-right">
+                <a class="btn btn-primary" ng-click="gotoView(actividad.id)">Ver Actividad</a>
+                <button class="btn btn-success btn-submit" type="submit">Modificar Actividad</button>
+            </div>
+        </div>
+    </div>
+</form>

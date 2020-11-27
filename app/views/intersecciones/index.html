@@ -1,64 +1,111 @@
-<!-- app\view\intersecciones\index.html -->
-<div class="alert alert-dismissible" ng-class="{'alert-success': message.code === 200, 'alert-danger': message.code !== 200 }" role="alert" ng-show="message.code !== undefined">
-    <button type="button" class="close" ng-click="message.code = undefined" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    {{ message.message }}
-</div>
+<ol class="breadcrumb">
+    <li><a ui-sref="main">Inicio</a></li>
+    <li>Mantenimiento</li>
+    <li class="active">Intersecciones</li>
+</ol>
 <h2>Intersecciones</h2>
-<hr>
+<div class="alert alert-dismissible" ng-class="{'alert-success': errors === undefined, 'alert-danger': errors !== undefined }" role="alert" ng-show="message !== undefined">
+    <button type="button" class="close" ng-click="message = undefined" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    {{ message }} 
+</div>
 <div class="row">
     <div class="col-sm-12">
         <form class="form-inline">
-            <button class="btn btn-primary" type="button" ng-click="showInterseccionesAdd($event)"><span class="glyphicon glyphicon-plus"></span> Nueva Intersección</button>
-            <input id="srBuscar" type="search" class="form-control" placeholder="Buscar" ng-model="search.text" />
+            <div class="row">
+                <div class="col-sm-12">
+                    <a class="btn btn-primary" ui-sref="interseccionesAdd"><span class="glyphicon glyphicon-plus"></span> Nueva Intersección</a>
+                    <input class="form-control" placeholder="Buscar" ng-model="table.search.text" />
+                    <div class="btn-group pull-right" role="group" aria-label="...">
+                        <button type="button" ng-click="changeDisplay('lista')" ng-class="{'btn-primary': display === 'lista', 'btn-default active': display === 'mapa'}" 
+                            class="btn">Lista
+                        </button>
+                        <button type="button" ng-click="changeDisplay('mapa')" ng-class="{'btn-primary': display === 'mapa', 'btn-default active': display === 'lista'}" 
+                            class="btn">Mapa
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" ng-model="table.search.estado_id" value=""> 
+                            Todos
+                        </label>
+                        <label>
+                            <input type="radio" ng-model="table.search.estado_id" value="1"> 
+                            Activos
+                        </label>
+                        <label>
+                            <input type="radio" ng-model="table.search.estado_id" value="2"> 
+                            Inactivos
+                        </label>
+                    </div>
+                    <div class="pull-right" ng-if="display === 'lista'">
+                        Mostrando 
+                        <select class="form-control" style="width: 70px; display: inline;" ng-change="table.onChangeItemsPerPage()"
+                            ng-model="table.pagination.itemsPerPage" ng-options="option for option in [10, 50, 100, 150]">
+                        </select> 
+                        resultados por página
+                    </div>
+                </div>
+            </div>
         </form>
-        <div class="radio pull-left">
-            <label>
-                <input type="checkbox" ng-model="search.check_all" ng-click="check_all_list_event()"> 
-                Todos
-            </label>
-            <label>
-                <input type="checkbox" ng-model="search.estado_1" ng-value="1" ng-click="check_change()">
-                Activos
-            </label>
-            <label>
-                <input type="checkbox" ng-model="search.estado_2" ng-value="2" ng-click="check_change()">
-                Inactivos
-            </label>
-        </div>
-        <div class="pull-right">
-            Mostrando 
-            <select class="form-control" style="width: 70px; display: inline;" ng-change="onChangeItemsPerPage()"
-                ng-model="items_per_page" ng-options="option for option in [10, 50, 100, 150]">
-            </select> 
-            resultados por página
-        </div>
     </div>
 </div>
-<div class="row">
+<div ng-if="display === 'lista'">
+    <scrollable-table watch="marcas" class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th ng-style="{'width': table.interseccionesWs.wId}" sortable-header col="id">ID</th>
+                    <th ng-style="{'width': table.interseccionesWs.wDescripcion}" sortable-header col="descripcion">Descripción</th>
+                    <th ng-style="{'width': table.interseccionesWs.wCodigo}" sortable-header col="codigo">Código</th>
+                    <th ng-style="{'width': table.interseccionesWs.wAcciones}">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-hide="!table.loading"><td colspan="4">Cargando...</td></tr>
+                <tr ng-show="!table.loading && intersecciones.length === 0"><td colspan="4">No hay registros</td></tr>
+                <tr ng-hide="table.loading" ng-class="{'warning': interseccion.estado_id === 4, 'danger': interseccion.estado_id === 2}" ng-repeat="interseccion in intersecciones" row-id="{{ interseccion.id }}">
+                    <td>{{ interseccion.id }}</td>
+                    <td>{{ interseccion.descripcion }}</td>
+                    <td>{{ interseccion.codigo }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="showInterseccionesView(interseccion)" title="Ver Detalle"><span class="glyphicon glyphicon-zoom-in"></span></button>
+                        <button ng-show="interseccion.estado_id === 1" type="button" class="btn btn-primary btn-sm" ng-click="showInterseccionesEdit(interseccion)" title="Modificar"><span class="glyphicon glyphicon-pencil"></span></button>
+                        <button ng-show="interseccion.estado_id === 1" type="button" class="btn btn-danger btn-sm" ng-click="disable(interseccion)" title="Deshabilitar"><span class="glyphicon glyphicon-remove"></span></button>
+                        <button ng-show="interseccion.estado_id === 2" type="button" class="btn btn-default btn-sm" ng-click="enable(interseccion)" title="Habilitar"><span class="glyphicon glyphicon-ok"></span></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </scrollable-table>
+    <ul uib-pagination total-items="table.pagination.totalItems" first-text="Primero" 
+        last-text="Último" next-text="Siguiente" previous-text="Anterior"
+        items-per-page="table.pagination.itemsPerPage" ng-model="table.page" 
+        class="pagination-sm" boundary-links="true" force-ellipses="true"
+        ng-change="table.pageChanged()">
+    </ul>
+</div>
+<div class="row" ng-if="display === 'mapa'">
     <div class="col-sm-12">
-        <scrollable-table watch="causas" class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-show="loading"><td colspan="2">Cargando...</td></tr>
-                    <tr ng-show="!loading && causas.length === 0"><td colspan="2">No hay registros</td></tr>
-                    <tr ng-show="!loading && causas.length !== 0" ng-class="{'danger': causa.estado_id == 2}" context-menu="menuOptions" ng-repeat="causa in causas" row-id="{{ causa.id }}">
-                        <td>{{ causa.id }} </td>
-                        <td>{{ causa.descripcion }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </scrollable-table>
-        
-        <ul uib-pagination total-items="pagination.totalItems" first-text="Primero" 
-            last-text="Último" next-text="Siguiente" previous-text="Anterior"
-            items-per-page="pagination.itemsPerPage" ng-model="page" 
-            class="pagination-sm" boundary-links="true" force-ellipses="true"
-            ng-change="pageChanged()"></ul>
+        <div ng-hide="!table.loading">Cargando...</div>
+        <div map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{ googleMapsUrl }}">
+            <ng-map center="{{ ubicacionLat }}, {{ ubicacionLng }}" zoom="14" style="height: 500px;"
+                zoom-to-include-markers="{{ includeMarkers }}" default-style="false">
+                <info-window id="myInfoWindow">
+                    <div ng-non-bindable>
+                        <h5>{{ selectedInterseccion.descripcion }}</h5>
+                        <p>ID: {{ selectedInterseccion.id }}</p>
+                        <p>Código: {{ selectedInterseccion.codigo }}</p>
+                    </div>
+                </info-window>
+                <marker ng-repeat="interseccion in intersecciones" position="{{ interseccion.latitud }}, {{ interseccion.longitud }}"
+                    title="" id="" on-click="showInterseccion(event, interseccion)" 
+                    icon="{ url:'images/marker.png', scaledSize:[20, 33], origin: [0,0] }">
+                </marker>
+            </ng-map>
+        </div>
     </div>
 </div>

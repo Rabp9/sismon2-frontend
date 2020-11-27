@@ -1,0 +1,96 @@
+<ol class="breadcrumb">
+    <li><a ui-sref="main">Inicio</a></li>
+    <li>Mantenimiento</li>
+    <li class="active">Actividades</li>
+</ol>
+<h2>Actividades</h2>
+<div class="alert alert-dismissible" ng-class="{'alert-success': errors === undefined, 'alert-danger': errors !== undefined }" role="alert" ng-show="message !== undefined">
+    <button type="button" class="close" ng-click="message = undefined" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    {{ message }} 
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <form class="form-inline">
+            <div class="row">
+                <div class="col-sm-12">
+                    <a class="btn btn-primary" ui-sref="actividadesRegistrar"><span class="glyphicon glyphicon-plus"></span> Registrar Actividad</a>
+                    <input class="form-control" placeholder="Buscar" ng-model="table.search.text" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="radio">
+                        <label>
+                            <input type="checkbox" ng-model="todos" ng-click="checkAll()"> 
+                            Todos
+                        </label>
+                        <label>
+                            <input type="checkbox" ng-click="getActividades()" checklist-model="table.search.estado_id" checklist-value="1"> 
+                            Pendientes
+                        </label>
+                        <label>
+                            <input type="checkbox" ng-click="getActividades()" checklist-model="table.search.estado_id" checklist-value="3"> 
+                            Realizados
+                        </label>
+                        <label>
+                            <input type="checkbox" ng-click="getActividades()" checklist-model="table.search.estado_id" checklist-value="2"> 
+                            Inactivos
+                        </label>
+                    </div>
+                    <div class="pull-right" ng-if="display === 'lista'">
+                        Mostrando 
+                        <select class="form-control" style="width: 70px; display: inline;" ng-change="table.onChangeItemsPerPage()"
+                            ng-model="table.pagination.itemsPerPage" ng-options="option for option in [10, 50, 100, 150]">
+                        </select> 
+                        resultados por página
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<scrollable-table watch="trabajadores" class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th ng-style="{'width': table.actividadesWs.wId}" sortable-header col="id">ID</th>
+                <th ng-style="{'width': table.actividadesWs.wDescripcion}" sortable-header col="descripcion">Descripción</th>
+                <th ng-style="{'width': table.actividadesWs.wActividadesTipo}" sortable-header col="actividadesTipo">Tipo</th>
+                <th ng-style="{'width': table.actividadesWs.wResponsable}" sortable-header col="responsable">Responsable</th>
+                <th ng-style="{'width': table.actividadesWs.wNTareas}" sortable-header col="nTareas">Núm. Tareas</th>
+                <th ng-style="{'width': table.actividadesWs.wNIntersecciones}" sortable-header col="nIntersecciones">Núm. Intersecciones</th>
+                <th ng-style="{'width': table.actividadesWs.wFechaRegistro}" sortable-header col="fechaRegistro">F. Registro</th>
+                <th ng-style="{'width': table.actividadesWs.wPorcentaje}" sortable-header col="Porcentaje">% Ejecución</th>
+                <th ng-style="{'width': table.actividadesWs.wAcciones}">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-hide="!table.loading"><td colspan="9">Cargando...</td></tr>
+            <tr ng-show="!table.loading && actividades.length === 0"><td colspan="9">No hay registros</td></tr>
+            <tr ng-hide="table.loading" ng-class="{'success': actividad.estado_id === 3, 'danger': actividad.estado_id === 2}" ng-repeat="actividad in actividades" row-id="{{ actividad.id }}">
+                <td>{{ actividad.id }}</td>
+                <td>{{ actividad.descripcion }}</td>
+                <td>{{ actividad.actividades_tipo.descripcion }}</td>
+                <td>{{ actividad.trabajador.fullName }}</td>
+                <td style="text-align: center;">{{ actividad.tareas.length }}</td>
+                <td style="text-align: center;">{{ actividad.actividades_intersecciones_detalles.length }}</td>
+                <td style="text-align: center;">{{ actividad.fecha_registro }}</td>
+                <td>
+                    <uib-progressbar class="progress-striped" value="actividad.porcentaje">{{ actividad.porcentaje }}%</uib-progressbar>
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" ui-sref="actividadesView({actividad_id: actividad.id})" title="Ver Detalle"><span class="glyphicon glyphicon-zoom-in"></span></a>
+                    <a ng-show="actividad.estado_id === 1" ui-sref="actividadesEdit({actividad_id: actividad.id})" class="btn btn-primary btn-sm" title="Modificar"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <button ng-show="actividad.estado_id === 1" type="button" class="btn btn-danger btn-sm" ng-click="disable(actividad)" title="Deshabilitar"><span class="glyphicon glyphicon-remove"></span></button>
+                    <button ng-show="actividad.estado_id === 2" type="button" class="btn btn-default btn-sm" ng-click="enable(actividad)" title="Habilitar"><span class="glyphicon glyphicon-ok"></span></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</scrollable-table>
+<ul uib-pagination total-items="table.pagination.totalItems" first-text="Primero" 
+    last-text="Último" next-text="Siguiente" previous-text="Anterior"
+    items-per-page="table.pagination.itemsPerPage" ng-model="table.page" 
+    class="pagination-sm" boundary-links="true" force-ellipses="true"
+    ng-change="table.pageChanged()">
+</ul>

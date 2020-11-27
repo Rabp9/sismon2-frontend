@@ -1,1 +1,25 @@
-<p>This is the intersecciones/view view.</p>
+<div class="modal-header">
+    <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Detalle de Intersección</h4>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <label>Descripción</label>
+        <p>{{ interseccion.descripcion }}</p>
+    </div>
+    <div class="form-group">
+        <label>Código</label>
+        <p>{{ interseccion.codigo }}</p>
+    </div>
+    <div class="form-group">
+        <label>Ubicación</label>
+        <div map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{ googleMapsUrl }}">
+            <ng-map center="{{ interseccion.latitud }}, {{ interseccion.longitud }}" zoom="13">
+                <marker position="{{ interseccion.latitud }}, {{ interseccion.longitud }}">
+            </ng-map>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="close()">Cerrar</button>
+</div>

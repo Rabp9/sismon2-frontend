@@ -1,1 +1,30 @@
-<p>This is the intersecciones/edit view.</p>
+<form novalidate angular-validator angular-validator-submit="save(interseccion)" name="InterseccionEdit" angular-validator-quiet>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Editar Intersección</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="txtDescripcion">Descripción</label>
+            <input id="txtDescripcion" class="form-control" type="text" ng-model="interseccion.descripcion"
+                name="interseccionDescripcion" placeholder="Escribe una descripción" required required-message="'Este campo es requerido'" validate-on="blur" />
+        </div>
+        <div class="form-group">
+            <label for="txtCodigo">Código</label>
+            <input id="txtCodigo" class="form-control" type="text" ng-model="interseccion.codigo"
+                name="interseccionCodigo" placeholder="Escribe un código" required required-message="'Este campo es requerido'" validate-on="blur" />
+        </div>
+        <div class="form-group">
+            <label>Ubicación</label>
+            <div map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{ googleMapsUrl }}">
+                <ng-map center="{{ lttCenter }}, {{ lgtCenter }}" zoom="13" on-click="setMarker()">
+                    <marker position="{{ interseccion.latitud }}, {{ interseccion.longitud }}">
+                </ng-map>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="close()">Cerrar</button>
+        <button class="btn btn-success btn-submit pull-right" type="submit">Guardar Intersección</button>
+    </div>
+</form>

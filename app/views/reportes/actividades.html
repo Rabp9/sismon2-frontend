@@ -1,0 +1,73 @@
+<ol class="breadcrumb">
+    <li><a ui-sref="main">Inicio</a></li>
+    <li>Reportes</li>
+    <li class="active">Actividades</li>
+</ol>
+<h2>Reporte de Actividades</h2>
+<div class="alert alert-dismissible" ng-class="{'alert-success': errors === undefined, 'alert-danger': errors !== undefined }" role="alert" ng-show="message !== undefined">
+    <button type="button" class="close" ng-click="message = undefined" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    {{ message }} 
+</div>
+<form novalidate angular-validator angular-validator-submit="report(pre_fechaDesde, pre_fechaHasta, actividadesTipoSelected, table.interseccionesSelected)" name="reportesActividades" angular-validator-quiet>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="txtFechaDesde">Fecha Desde:</label>
+                <input id="txtFechaDesde" class="form-control" type="date" ng-model="pre_fechaDesde" 
+                    required required-message="'Ingrese una fecha'" validate-on="blur" name="FechaDesde"
+                    invalid-message="'Ingrese una fecha correctamente'"/>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="txtFechaHasta">Fecha Hasta</label>
+                <input id="txtFechaHasta" class="form-control" type="date" ng-model="pre_fechaHasta" 
+                    required required-message="'Ingrese una fecha'" validate-on="blur" name="FechaHasta"
+                    invalid-message="'Ingrese una fecha correctamente'"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="sltActividadesTipo">Tipo de Actividad</label>
+                <select id="sltActividadesTipo" class="form-control"
+                    ng-options="actividadesTipo as actividadesTipo.descripcion for actividadesTipo in actividadesTipos"
+                    ng-model="actividadesTipoSelected"
+                    required required-message="'Seleccione un tipo de actividad'" validate-on="blur" name="ActividadesTipoSelected"
+                    invalid-message="'Seleccione un tipo de actividad correctamente'">
+                    <option value="">{{ loadingActividadesTipos }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <scrollable-table watch="marcas" class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th ng-style="{'width': table.interseccionesWs.wId}" sortable-header col="id">ID</th>
+                            <th ng-style="{'width': table.interseccionesWs.wDescripcion}" sortable-header col="descripcion">Descripción</th>
+                            <th ng-style="{'width': table.interseccionesWs.wCodigo}" sortable-header col="codigo">Código</th>
+                            <th ng-style="{'width': table.interseccionesWs.wAcciones}"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-hide="!table.loading"><td colspan="4">Cargando...</td></tr>
+                        <tr ng-show="!table.loading && intersecciones.length === 0"><td colspan="4">No hay registros</td></tr>
+                        <tr ng-hide="table.loading" ng-class="{'warning': interseccion.estado_id === 4, 'danger': interseccion.estado_id === 2}" ng-repeat="interseccion in intersecciones" row-id="{{ interseccion.id }}">
+                            <td>{{ interseccion.id }}</td>
+                            <td>{{ interseccion.descripcion }}</td>
+                            <td>{{ interseccion.codigo }}</td>
+                            <td>
+                                <input type="checkbox" class="form-control input-sm" checklist-model="table.interseccionesSelected" checklist-value="interseccion"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </scrollable-table>
+        </div>
+    </div>
+    <button class="btn btn-success btn-submit pull-right" type="submit">Generar Reporte</button>
+</form>

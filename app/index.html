@@ -2,13 +2,12 @@
 <html  ng-app="sismon2FrontendApp" lang="es">
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title ng-bind="title + ' - Sistema de Monitoreo'">Sistema de Monitoreo</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
     <link rel="stylesheet" href="bower_components/angular-scrollable-table/scrollable-table.css" />
     <!-- endbower -->
     <!-- endbuild -->
@@ -16,14 +15,14 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
 </head>
-<body>
+<body ng-class="{'body-login': $state.current.controllerAs === 'usersLogin'}" ng-cloak>
     <!--[if lte IE 8]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
     <div class="header">
-        <div class="navbar navbar-default" role="navigation">
+        <div id="nvbNavegador" class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
 
@@ -43,16 +42,27 @@
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mantenimiento <span class="caret"></span></a>
                             <ul class="dropdown-menu">
+                                <li ui-sref-active="active"><a ui-sref="actividadesIndex">Actividades</a></li>
                                 <li ui-sref-active="active"><a ui-sref="interseccionesIndex">Intersecciones</a></li>
+                                <li ui-sref-active="active"><a ui-sref="trabajadoresIndex">Trabajadores</a></li>
+                                <li ui-sref-active="active"><a ui-sref="actividadesTiposIndex">Tipo de Actividades</a></li>
+                                <li ui-sref-active="active"><a ui-sref="usersIndex">Usuarios</a></li>
                             </ul>
                         </li>
-                        <li><a ng-href="#/">Registrar Trabajo</a></li>
+                        <li ui-sref-active="active"><a ui-sref="mapa">Mapa</a></li>
+                        <li ui-sref-active="active"><a ui-sref="actividadesRegistrar">Registrar Actividad</a></li>
+                        <li ui-sref-active="active"><a ui-sref="trabajosRegistrar">Registrar Trabajo</a></li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reportes <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li ui-sref-active="active"><a ui-sref="ubicaciones">Reporte de Actividades</a></li>
+                                <li ui-sref-active="active"><a ui-sref="reportesActividades">Reporte de Actividades</a></li>
                             </ul>
                         </li>
+                    </ul>
+                    
+                    <ul class="nav navbar-nav navbar-right">
+                          <li><a style="cursor: pointer;" ng-click="logout()">Log out</a></li>
+                          <li><a>{{ user.username }}</a></li>
                     </ul>
                 </div>
             </div>
@@ -65,7 +75,7 @@
 
     <div class="footer">
         <div class="container">
-            <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+            <p><span class="glyphicon glyphicon-copyright-mark"></span> Transportes Metropolitanos de Trujillo - 2019</p>
         </div>
     </div>
 
@@ -81,25 +91,53 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
     <script src="bower_components/ngmap/build/scripts/ng-map.js"></script>
     <script src="bower_components/tg-angular-validator/dist/angular-validator.js"></script>
     <script src="bower_components/angular-scrollable-table/angular-scrollable-table.js"></script>
+    <script src="bower_components/checklist-model/checklist-model.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/controllers/intersecciones/intersecciones.js"></script>
-    <script src="scripts/controllers/intersecciones/intersecciones-view.js"></script>
-    <script src="scripts/controllers/intersecciones/intersecciones-add.js"></script>
-    <script src="scripts/controllers/intersecciones/intersecciones-edit.js"></script>
     <script src="scripts/services/oauthhttpinterceptor.js"></script>
     <script src="scripts/controllers/intersecciones/index.js"></script>
     <script src="scripts/controllers/intersecciones/add.js"></script>
     <script src="scripts/controllers/intersecciones/view.js"></script>
     <script src="scripts/controllers/intersecciones/edit.js"></script>
+    <script src="scripts/services/interseccionesservice.js"></script>
+    <script src="scripts/services/envservice.js"></script>
+    <script src="scripts/services/$utilsviewservice.js"></script>
+    <script src="scripts/controllers/trabajos/registrar.js"></script>
+    <script src="scripts/services/trabajosservice.js"></script>
+    <script src="scripts/services/actividadestiposservice.js"></script>
+    <script src="scripts/services/actividadesservice.js"></script>
+    <script src="scripts/services/trabajadoresservice.js"></script>
+    <script src="scripts/services/tareasservice.js"></script>
+    <script src="scripts/controllers/reportes/actividades.js"></script>
+    <script src="scripts/controllers/reportes/actividades-web.js"></script>
+    <script src="scripts/controllers/users-login.js"></script>
+    <script src="scripts/services/usersService.js"></script>
+    <script src="scripts/controllers/users/index.js"></script>
+    <script src="scripts/controllers/users/add.js"></script>
+    <script src="scripts/controllers/users/edit.js"></script>
+    <script src="scripts/controllers/users/view.js"></script>
+    <script src="scripts/controllers/actividades/index.js"></script>
+    <script src="scripts/controllers/actividades/registrar.js"></script>
+    <script src="scripts/controllers/actividades/edit.js"></script>
+    <script src="scripts/controllers/actividades/view.js"></script>
+    <script src="scripts/controllers/mapa.js"></script>
+    <script src="scripts/controllers/trabajadores/index.js"></script>
+    <script src="scripts/controllers/trabajadores/add.js"></script>
+    <script src="scripts/controllers/trabajadores/edit.js"></script>
+    <script src="scripts/controllers/trabajadores/view.js"></script>
+    <script src="scripts/controllers/actividadestipos/index.js"></script>
+    <script src="scripts/controllers/actividadestipos/add.js"></script>
+    <script src="scripts/controllers/actividadestipos/view.js"></script>
+    <script src="scripts/controllers/actividadestipos/edit.js"></script>
+    <script src="scripts/controllers/users/asignar.js"></script>
+    <script src="scripts/controllers/actividades/edit-tarea.js"></script>
     <!-- endbuild -->
 </body>
 </html>

@@ -1,0 +1,197 @@
+<ol class="breadcrumb">
+    <li><a ui-sref="main">Inicio</a></li>
+    <li>Trabajos</li>
+    <li class="active">Registrar Trabajo</li>
+</ol>
+<h2>Registrar Trabajo</h2>
+<div class="alert alert-dismissible" ng-class="{'alert-success': errors === undefined, 'alert-danger': errors !== undefined }" role="alert" ng-show="message !== undefined">
+    <button type="button" class="close" ng-click="message = undefined" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    {{ message }} 
+</div>
+<form novalidate angular-validator angular-validator-submit="save(trabajo, tareasRealizadas, tableTrabajadores.trabajadoresSelected)" name="TrabajoRegister" angular-validator-quiet>
+    
+    <uib-tabset active="active">
+        <uib-tab index="0" heading="Tareas" disable="true">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="txtFechaHora">Fecha</label>
+                        <input id="txtFechaHora" class="form-control" type="date" ng-model="pre_fechaHora" 
+                            required required-message="'Ingrese una fecha'" validate-on="blur" name="TrabajoFecha"
+                            invalid-message="'Ingrese una fecha correctamente'" ng-change="formatDate(pre_fechaHora)"/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="sltActividadesTipo">Tipo de Actividad</label>
+                        <select id="sltActividadesTipo" class="form-control"
+                            ng-options="actividadesTipo.id as actividadesTipo.descripcion for actividadesTipo in actividadesTipos"
+                            ng-model="actividadesTipoIdSelected"
+                            ng-change="getActividadesPendientes(actividadesTipoIdSelected)" name="ActividadesTipoIdSelected">
+                            <option value="">{{ loadingActividadesTipos }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="sltActividad">Actividad</label>
+                        <select id="sltActividadesTipo" class="form-control"
+                            ng-options="actividad.id as actividad.descripcion for actividad in actividades"
+                            ng-model="actividadIdSelected"
+                            ng-change="getTareasByActividad(actividadIdSelected)" name="ActividadesIdSelected">
+                            <option value="">{{ loadingActividadesPendientes }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Tareas Pendientes</label>
+                        <scrollable-table class="table-responsive" id="tblTareasPendientes">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th ng-style="{'width': tableTareas.tareasWs.wId}" sortable-header col="id">ID</th>
+                                        <th ng-style="{'width': tableTareas.tareasWs.wDescripcion}" sortable-header col="descripcion">Descripción</th>
+                                        <th ng-style="{'width': tableTareas.tareasWs.wFechaProgramada}" sortable-header col="fechaProgramada">F. Programada</th>
+                                        <th ng-style="{'width': tableTareas.tareasWs.wInterseccion}" sortable-header col="interseccion">Intersección</th>
+                                        <th ng-style="{'width': tableTareas.tareasWs.wAcciones}" sortable-header col="acciones"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-hide="!tableTareas.loading"><td colspan="5">Cargando...</td></tr>
+                                    <tr ng-show="!tableTareas.loading && tareas.length === 0"><td colspan="5">No hay registros</td></tr>
+                                    <tr ng-hide="tableTareas.loading" ng-repeat="tarea in tareas" row-id="{{ tarea.id }}">
+                                        <td>{{ tarea.id }}</td>
+                                        <td>{{ tarea.descripcion }}</td>
+                                        <td>{{ tarea.fecha_programada }}</td>
+                                        <td>{{ tarea.interseccion.descripcion }}</td>
+                                        <td>
+                                            <input type="checkbox" class="form-control input-sm" checklist-model="tableTareas.tareasSelected" checklist-value="tarea"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </scrollable-table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" ng-click="addTarea(tableTareas.tareasSelected)" class="btn btn-primary col-sm-12"><span class="glyphicon glyphicon-plus"></span> Agregar Tarea</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Tareas Realizadas</label>
+                        <scrollable-table class="table-responsive" id="tareasRealizadas">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width: {{ tableTareas.tareasWs.wId }}">ID</th>
+                                        <th style="width: {{ tableTareas.tareasWs.wDescripcion }}">Descripción</th>
+                                        <th style="width: {{ tableTareas.tareasWs.wFechaProgramada }}">F. Programada</th>
+                                        <th style="width: {{ tableTareas.tareasWs.wInterseccion }}">Intersección</th>
+                                        <th style="width: {{ tableTareas.tareasWs.wAcciones }}"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="tarea in tareasRealizadas" row-id="{{ tarea.id }}">
+                                        <td>{{ tarea.id }}</td>
+                                        <td>{{ tarea.descripcion }}</td>
+                                        <td>{{ tarea.fecha_programada }}</td>
+                                        <td>{{ tarea.interseccion.descripcion }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm" ng-click="removeTarea(tarea)"><span class="glyphicon glyphicon-remove"></span></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </scrollable-table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" style="text-align: center;">
+                    <button type="button" class="btn btn-info btn-step" ng-click="goStep(0, 1)">Seguir >></button>
+                </div>
+            </div>
+        </uib-tab>
+        
+        <uib-tab index="1" heading="Trabajadores" disable="true">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Trabajadores</label>
+                        <scrollable-table class="table-responsive" id="trabajadores">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width: {{ tableTrabajadores.trabajadoresWs.wId }}">ID</th>
+                                        <th style="width: {{ tableTrabajadores.trabajadoresWs.wFullName }}">Nombre Completo</th>
+                                        <th style="width: {{ tableTrabajadores.trabajadoresWs.wDni }}">DNI</th>
+                                        <th style="width: {{ tableTrabajadores.trabajadoresWs.wAcciones }}"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-hide="!tableTrabajadores.loading"><td colspan="4">Cargando...</td></tr>
+                                    <tr ng-show="!tableTrabajadores.loading && trabajadores.length === 0"><td colspan="4">No hay registros</td></tr>
+                                    <tr ng-hide="tableTrabajadores.loading" ng-repeat="trabajador in trabajadores" row-id="{{ trabajador.id }}">
+                                        <td>{{ trabajador.id }}</td>
+                                        <td>{{ trabajador.fullName }}</td>
+                                        <td>{{ trabajador.dni }}</td>
+                                        <td>
+                                            <input type="checkbox" class="form-control input-sm" checklist-model="tableTrabajadores.trabajadoresSelected" checklist-value="trabajador"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </scrollable-table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" style="text-align: center;">
+                    <button type="button" class="btn btn-info btn-step btn-step-prev" ng-click="goStep(1, 0)"><< Retroceder</button>
+                    <button type="button" class="btn btn-info btn-step btn-step-next" ng-click="goStep(1, 2)">Seguir >></button>
+                </div>
+            </div>
+        </uib-tab>
+        
+        <uib-tab index="2" heading="Confirmación" disable="true">
+            <div class="row" ng-if="trabajo.fecha_registro !== undefined">
+                <div class="col-sm-12">
+                    <label>Fecha</label>
+                    <p>{{ trabajo.fecha_registro }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6" ng-if="tareasRealizadas.length !== 0">
+                    <label>Tareas</label>
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="tarea in tareasRealizadas">{{ tarea.descripcion }} (<b>{{ tarea.interseccion.descripcion }}</b>)</li>
+                    </ul>
+                </div>
+                <div class="col-sm-6" ng-if="tableTrabajadores.trabajadoresSelected.length !== 0">
+                    <label>Trabajadores</label>
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="trabajador in tableTrabajadores.trabajadoresSelected">{{ trabajador.fullName }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button class="btn btn-success btn-submit pull-right" type="submit">Registrar Trabajo</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" style="text-align: center;">
+                    <button type="button" class="btn btn-info btn-step" ng-click="goStep(2, 1)"><< Retroceder</button>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+    
+</form>

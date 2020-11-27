@@ -1,0 +1,20 @@
+<ol class="breadcrumb">
+    <li><a ui-sref="main">Inicio</a></li>
+    <li>Mantenimiento</li>
+    <li><a ui-sref="actividadesTiposIndex">Tipo de Actividades</a></li>
+    <li class="active">Nuevo Tipo de Actividad</li>
+</ol>
+<h2>Nuevo Tipo de Actividad</h2>
+<form novalidate angular-validator angular-validator-submit="save(actividadesTipo)" name="ActividadesTipoAdd" angular-validator-quiet>
+    <div class="form-group">
+        <label for="txtDescripcion">Descripción</label>
+        <input id="txtDescripcion" class="form-control" type="text" ng-model="actividadesTipo.descripcion"
+            name="actividadesTipoDescripcion" placeholder="Escribe una descripción" required required-message="'Este campo es requerido'" validate-on="blur" />
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-link" ui-sref="actividadesTiposIndex">Volver a la lista de tipos de actividades</a>
+            <button class="btn btn-success btn-submit pull-right" type="submit">Guardar Tipo de Actividad</button>
+        </div>
+    </div>
+</form>

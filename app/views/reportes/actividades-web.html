@@ -1,0 +1,30 @@
+<div id="print" >
+    <h2>Reporte de Actividades</h2>
+    <p><button id="btnPrint" class="btn btn-default" ng-click="exportPDF()">Imprimir</button></p>
+    <table class="table table-responsive table-striped">
+        <thead>
+            <tr>
+                <th ng-style="{'width': table.actividadesWs.wId}">ID</th>
+                <th ng-style="{'width': table.actividadesWs.wDescripcion}">Descripción</th>
+                <th ng-style="{'width': table.actividadesWs.wFechaRegistro}">Fecha Registro</th>
+                <th ng-style="{'width': table.actividadesWs.wActividadesTipo}">Tipo de Actividad</th>
+                <th ng-style="{'width': table.actividadesWs.wResponsable}">Responsable</th>
+                <th ng-style="{'width': table.actividadesWs.wEstado}">Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-show="actividades.length === 0"><td colspan="6">No se encontraron registros con los parámetros seleccionados</td></tr>
+            <tr ng-hide="actividades.length === 0" ng-repeat="actividad in actividades">
+                <td>{{ actividad.id }}</td>
+                <td>{{ actividad.descripcion }}</td>
+                <td>{{ actividad.fecha_registro }}</td>
+                <td>{{ actividad.actividades_tipo.descripcion }}</td>
+                <td>{{ actividad.trabajador.fullName }}</td>
+                <td>
+                    <span ng-if="actividad.estado_id === 1">Pendiente</span>
+                    <span ng-if="actividad.estado_id === 3">Realizado</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

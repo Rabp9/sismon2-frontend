@@ -1,0 +1,44 @@
+Recopilar requerimientos------------------------------------------------------------------
+Identificar los objetos de dominio del mundo real-----------------------------------------
+Prototipo de detalle de actividad---------------------------------------------------------
+Prototipo de mapa-------------------------------------------------------------------------
+Prototipo de registro de nueva actividad--------------------------------------------------
+Prototipo de inicio de sesión-------------------------------------------------------------
+Prototipo de lista de actividades---------------------------------------------------------
+Identificar los casos de uso mediante un diagrama-----------------------------------------
+Organizar los casos de uso----------------------------------------------------------------
+Asignar los requerimientos fun F. a los casos de uso y objetos del dominio----------------
+Planificar los lanzamientos---------------------------------------------------------------
+Descripciones de los CU, F. básicos y F. alternativos - Generar Reporte de Actividades----
+Descripciones de los CU, F. básicos y F. alternativos - Administrar Intersecciones--------
+Descripciones de los CU, F. básicos y F. alternativos - Registrar Trabajo-----------------
+Hito 1: Revisar todo lo modelado: Actualizar Modelo de Dominio----------------------------
+Hito 1: Revisar todo lo modelado: Prototipo Generar Reporte de Actividades----------------
+Hito 1: Revisar todo lo modelado: Prototipo Administrar Intersecciones--------------------
+Hito 1: Revisar todo lo modelado: Prototipo Registrar Trabajo-----------------------------
+Hito 1: Revisar todo lo modelado: Revisar diagrama de casos de uso y organizarlos---------
+Hito 1: Revisar todo lo modelado: Asignar reqs. func. a CU y objetos de dominio-----------
+Hito 1: Revisar todo lo modelado: Revisar especs. de CU-----------------------------------
+Hito 1: Plasmar todo en un Informe--------------------------------------------------------
+Diagrama de Robustez CU. Generar Reporte de Actividades-----------------------------------
+Actualizar el modelo de dominio-----------------------------------------------------------
+Actualizar la especificación de los casos de uso------------------------------------------
+Diagrama de Robustez CU. Administrar Intersecciones---------------------------------------
+Actualizar el modelo de dominio-----------------------------------------------------------
+Actualizar la especificación de los casos de uso------------------------------------------
+Diagrama de Robustez CU. Registrar Trabajo------------------------------------------------
+Actualizar el modelo de dominio-----------------------------------------------------------
+Actualizar la especificación de los casos de uso------------------------------------------
+Crear diagrama de clases con atributos----------------------------------------------------
+Crear base de datos preliminar------------------------------------------------------------
+Diagrama de secuencia Generar Reporte de Actividades--------------------------------------
+Diagrama de secuencia Administrar Intersecciones------------------------------------------
+Diagrama de secuencia Registrar Trabajo---------------------------------------------------
+Actualizar el diagrama de clases----------------------------------------------------------
+Generar los registros automáticos
+
+Descripciones de los CU, F. básicos y F. alternativos - Administrar Actividades
+Descripciones de los CU, F. básicos y F. alternativos - Ver Mapa
+Descripciones de los CU, F. básicos y F. alternativos - Registrar Actividad
+Descripciones de los CU, F. básicos y F. alternativos - Monitorear Actividad
+Dibujar diagramas de Robustez

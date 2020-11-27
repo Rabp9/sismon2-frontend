@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Editar Tarea</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="txtTareaDescripcion">Descripción</label>
+                <input id="txtTareaDescripcion" class="form-control" type="text" ng-model="tarea.descripcion"
+                    name="tareaDescripcion" placeholder="Escribe una descripción" required required-message="'Este campo es requerido'" validate-on="blur" />
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="sltTareaDificultad">Dificultad</label>
+                <select id="sltTareaDificultad" class="form-control"
+                    ng-model="tarea.dificultad" name="tareaDificultad">
+                    <option value="BAJA">BAJA</option>
+                    <option value="MEDIA">MEDIA</option>
+                    <option value="ALTA">ALTA</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="sltTareaPrioridad">Prioridad</label>
+                <select id="sltTareaPrioridad" class="form-control"
+                    ng-model="tarea.prioridad" name="tareaPrioridad">
+                    <option value="BAJA">BAJA</option>
+                    <option value="MEDIA">MEDIA</option>
+                    <option value="ALTA">ALTA</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="txtTareaFechaProgramada">Fecha Programada</label>
+                <input id="txtTareaFechaProgramada" class="form-control" type="date" ng-model="tarea.pre_fecha_programada"
+                    name="tareaFechaProgramada" placeholder="Escribe una descripción" required required-message="'Este campo es requerido'" validate-on="blur" />
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="tarea.interseccion !== null">
+        <div class="col-sm-12">
+            <label>Intersección</label>
+            <p>{{ tarea.interseccion.descripcion }}</p>
+
+            <label>Ubicación</label>
+            <div class="col-sm-12">
+                <div ng-show="loadingIntersecciones">Cargando...</div>
+                <div ng-hide="loadingIntersecciones" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{ googleMapsUrl }}">
+                    <ng-map center="{{ lttCenter }}, {{ lgtCenter }}" zoom="13" style="height: 500px;"
+                        zoom-to-include-markers="false" default-style="false">
+                        <marker ng-repeat="interseccion in intersecciones" position="{{ interseccion.latitud }}, {{ interseccion.longitud }}"
+                            title="{{ interseccion.codigo + ': ' + interseccion.descripcion }}" id="" on-click="setInterseccion(event, interseccion)"
+                            icon="{ url:'images/marker.png', scaledSize:[20, 33], origin: [0,0] }">
+                        </marker>
+                    </ng-map>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="close()">Cerrar</button>
+    <button class="btn btn-success btn-button pull-right" type="button" ng-click="save(tarea)">Guardar Tarea</button>
+</div>

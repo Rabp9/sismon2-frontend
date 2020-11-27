@@ -1,1 +1,33 @@
-<p>This is the intersecciones/add view.</p>
+<ol class="breadcrumb">
+    <li><a ui-sref="main">Inicio</a></li>
+    <li>Mantenimiento</li>
+    <li><a ui-sref="interseccionesIndex">Intersecciones</a></li>
+    <li class="active">Nueva Intersección</li>
+</ol>
+<h2>Nueva Intersección</h2>
+<form novalidate angular-validator angular-validator-submit="save(interseccion)" name="InterseccionAdd" angular-validator-quiet>
+    <div class="form-group">
+        <label for="txtDescripcion">Descripción</label>
+        <input id="txtDescripcion" class="form-control" type="text" ng-model="interseccion.descripcion"
+            name="interseccionDescripcion" placeholder="Escribe una descripción" required required-message="'Este campo es requerido'" validate-on="blur" />
+    </div>
+    <div class="form-group">
+        <label for="txtCodigo">Código</label>
+        <input id="txtCodigo" class="form-control" type="text" ng-model="interseccion.codigo"
+            name="interseccionCodigo" placeholder="Escribe un código" required required-message="'Este campo es requerido'" validate-on="blur" />
+    </div>
+    <div class="form-group">
+        <label>Ubicación</label>
+        <div map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{ googleMapsUrl }}">
+            <ng-map center="-8.1103401, -79.01554" zoom="13" on-click="setMarker()">
+                <marker position="{{ interseccion.latitud }}, {{ interseccion.longitud }}">
+            </ng-map>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-link" ui-sref="interseccionesIndex">Volver a la lista de intersecciones</a>
+            <button class="btn btn-success btn-submit pull-right" type="submit">Guardar Intersección</button>
+        </div>
+    </div>
+</form>
